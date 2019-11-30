@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Generateur</title>
+		<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+		<style>
+
+		.collage {
+			width: 1200px;
+
+		}
+		.collage img {
+			display: block;
+			float: left;
+		}
+
+
+		.vignette {
+			display: block;
+			float: left;
+		    border: 0px solid #000;
+		    margin: 0px 0px 0 0;
+		  }
+
+		</style>
+
+	</head>
+	<body>
+
+		<input type="file" id="files" name="files[]" multiple />
+		<div id="list"></div>
+		<script>
+		  function handleFileSelect(evt) {
+		    var files = evt.target.files; // liste des objets recupérés
+
+		    // On parcourt la liste de objets et on affiche les fichiers image sous forme de vignettes.
+
+		    for (var i = 0, f; f = files[i]; i++) {
+		      // uniquement le format image.
+		      if (!f.type.match('image.*')) {
+		        continue;
+		      }
+
+		      var reader = new FileReader();
+
+		      // pour capturer les informations du fichier
+		      reader.onload = (function(theFile) {
+		        return function(e) {
+		          // recupération de la vignette photo.
+		          var span = document.createElement('span');
+		          span.innerHTML = ['<img class="vignette" src="', e.target.result, '" title="', escape(theFile.name), '"/>'].join('');
+		          document.getElementById('list').insertBefore(span, null);
+		        };
+		      })(f);
+
+		      // on recuper URL de l'image
+		      reader.readAsDataURL(f);
+		    }
+		  }
+
+		  document.getElementById('files').addEventListener('change', handleFileSelect, false);
+		</script>
+		<div class="collage">
+			<img src="images/1.jpg">
+			<img src="images/2.jpg">
+			<img src="images/3.jpg">
+			<img src="images/4.jpg">
+			<img src="images/5.jpg">
+			<img src="images/6.jpg">
+			<img src="images/7.jpg">
+			<img src="images/8.jpg">
+			<img src="images/9.jpg">
+			<img src="images/10.jpg">
+		</div>
+	</body>
+	<script src="js/collage.js"></script>
+	<script>$('.collage').collage();</script>
+</html>
